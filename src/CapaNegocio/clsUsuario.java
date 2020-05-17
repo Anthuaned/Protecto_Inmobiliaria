@@ -6,7 +6,9 @@
 package CapaNegocio;
 
 import CapaDatos.clsJDBC;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  *
@@ -21,6 +23,8 @@ public class clsUsuario {
     clsJDBC objConectar = new clsJDBC();
     String strSQL;
     ResultSet rs = null;
+    Connection con;
+    Statement sent;
     
     
     /*
@@ -45,8 +49,7 @@ public class clsUsuario {
     */
     
     public String login(String usu, String con) throws Exception{
-        strSQL = "select nombre,apellido from usuario " + 
-                "where nombreusuario='" + usu + "' and contraseña='" + con + "' and estado=true";
+        strSQL = "select nombre,apellido from usuario where nombreusuario='"+usu+"' and contraseña='"+con+"' and estado=true";
         String nombre;
         String apellido;
         try {
@@ -61,20 +64,7 @@ public class clsUsuario {
         }
         return "";
     }
-    
-    
-    
-    public int validarRespuesta(String usu, String respuesta) throws Exception{
-        strSQL = "select count(*) as valor from usuario where nombreusuario='"+usu+"' and respuesta='"+respuesta+"' ";
-        try {
-            rs= objConectar.consultarBD(strSQL);
-            return rs.getInt("valor");
-            
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-    }
-   
+ 
    public ResultSet listarUsuarios() throws Exception{
        strSQL = "select * from usuario";
        try {

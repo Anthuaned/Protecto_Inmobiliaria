@@ -6,7 +6,10 @@
 package CapaNegocio;
 
 import CapaDatos.clsJDBC;
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  *
@@ -18,8 +21,10 @@ import java.sql.ResultSet;
  */
 public class clsCliente {
     clsJDBC objConectar = new clsJDBC();
-    String strSQL;
+    //String strSQL;
     ResultSet rs = null;
+    Connection con;
+    Statement sent;
     
     /*
       CREATE TABLE CLIENTE (
@@ -32,46 +37,122 @@ public class clsCliente {
       estado BOOLEAN NOT NULL);
     */
     
-    public void registrarCliente(String documento,String nombre,String apellido,String correo,String telefono,Boolean estado) throws Exception{
-        
-        strSQL="insert into cliente values(default,'"+documento+"','"+nombre+"','"+apellido+"','"+correo+"','"+telefono+"', "+estado+")";
+    public Integer generarCodigoCliente() throws Exception{
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("SELECT COALESCE(max(idcliente),0)+1 AS codigo FROM cliente");
+            ResultSet resultado = sentencia.executeQuery();
+            while (resultado.next()){
+               return resultado.getInt("codigo"); 
+            }
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
         }
-        
-    }
-    public ResultSet listarCliente() throws Exception{
-        
-        strSQL="select*from cliente";
-        try {
-            rs=objConectar.consultarBD(strSQL);
-            return rs;
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-        
+        return 0;
     }
     
-    public void darBajaCliente(int idcliente) throws Exception{
-        strSQL="update cliente set estado = true where idcliente="+idcliente+"";
+    public ResultSet listarCliente() throws Exception{
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("SELECT*FROM cliente");
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
         }
-        
     }
-    public void eliminarCliente(int idcliente) throws Exception{
-        
-        strSQL="delete from cliente where idcliente="+idcliente+"";
+    
+    public void registrarCliente(String documento,String nombre,String apellido,String correo,String telefono,Boolean estado) throws Exception{
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("INSERT INTO cliente VALUES(default,?,?,?,?,?,?)");
+            sentencia.setString(1, documento);
+            sentencia.setString(2, nombre);
+            sentencia.setString(3, apellido);
+            sentencia.setString(4, correo);
+            sentencia.setString(5, telefono);
+            sentencia.setBoolean(6, estado);
+            sentencia.executeUpdate();
         } catch (Exception e) {
-            throw new Exception(e);
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
         }
-        
     }
+    
+    
+    public ResultSet buscarClientes(int idCliente) throws Exception{
+        try {
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("SELECT*FROM clientes WHERE idcliente=?");
+            sentencia.setInt(1, idCliente);
+            ResultSet resultado = sentencia.executeQuery();
+            return resultado;
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
+        }
+    }
+    
+    
+    public void darBajaCliente(int idCliente) throws Exception{
+        try {
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("UPDATE cliente SET estado = false WHERE idcliente=?");
+            sentencia.setInt(1,idCliente);
+            sentencia.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
+        }
+    }
+    
+    
+    public void eliminarCliente(int idCliente) throws Exception{
+        try {
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("DELETE FROM cliente WHERE idcliente=?");
+            sentencia.setInt(1,idCliente);
+            sentencia.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
+        }
+    }
+    
+    
+    public void modificarCliente(int idCliente, String documento,String nombre,String apellido,String correo,String telefono,Boolean estado) throws Exception{
+        try {
+            objConectar.conectar();
+            con = objConectar.getConnection();
+            CallableStatement sentencia = con.prepareCall("UPDATE cliente SET dni_ruc=?, nombre=?, apellido=?, correo=?, telefono=?, estado=? WHERE idcliente=?");
+            sentencia.setString(1, documento );
+            sentencia.setString(2, nombre);
+            sentencia.setString(3, apellido);
+            sentencia.setString(4, correo);
+            sentencia.setString(5, telefono);
+            sentencia.setBoolean(6, estado);
+            sentencia.setInt(7, idCliente);
+            sentencia.executeUpdate();
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }finally{
+            objConectar.desconectar();
+        }
+    }
+ 
     
 }

@@ -5,6 +5,13 @@
  */
 package CapaPresentacion;
 
+import CapaNegocio.clsProveedor;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author User
@@ -14,6 +21,9 @@ public class jdProveedor extends javax.swing.JDialog {
     /**
      * Creates new form jdInmueble
      */
+    
+    clsProveedor objProveedor = new clsProveedor();
+    
     public jdProveedor(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -41,24 +51,34 @@ public class jdProveedor extends javax.swing.JDialog {
         jLabel5 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCorreo = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnNuevo = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProveedor = new javax.swing.JTable();
+        btnSalie = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestionar Proveedor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel1.setText("Código:");
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/buscarMarca.png"))); // NOI18N
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Tipo de Proveedor");
 
@@ -98,14 +118,14 @@ public class jdProveedor extends javax.swing.JDialog {
                     .addComponent(txtNombre)
                     .addComponent(txtApellidos)
                     .addComponent(txtTelefono)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2))
+                    .addComponent(txtCorreo)
+                    .addComponent(txtDireccion))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,38 +149,48 @@ public class jdProveedor extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/registrarCliente.png"))); // NOI18N
-        jButton1.setText("Nuevo");
-        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNuevo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/registrarCliente.png"))); // NOI18N
+        btnNuevo.setText("Nuevo");
+        btnNuevo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNuevoActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/modificarCliente.png"))); // NOI18N
-        jButton2.setText("Modificar");
-        jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnModificar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/modificarCliente.png"))); // NOI18N
+        btnModificar.setText("Modificar");
+        btnModificar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/darBajaCliente.png"))); // NOI18N
-        jButton3.setText("Dar de Baja");
-        jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eliminarCliente.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eliminarCliente.png"))); // NOI18N
-        jButton4.setText("Eliminar");
-        jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-
-        jButton5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/salirMarca.png"))); // NOI18N
-        jButton5.setText("Salir");
-        jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnLimpiar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/limpiarMarca.png"))); // NOI18N
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         tblProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -173,7 +203,22 @@ public class jdProveedor extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProveedorMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProveedor);
+
+        btnSalie.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        btnSalie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/salirMarca.png"))); // NOI18N
+        btnSalie.setText("Salir");
+        btnSalie.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnSalie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalieActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -182,11 +227,11 @@ public class jdProveedor extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSalie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -194,20 +239,20 @@ public class jdProveedor extends javax.swing.JDialog {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton4)
-                .addGap(18, 18, 18)
-                .addComponent(jButton5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnNuevo)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnEliminar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLimpiar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSalie)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -225,18 +270,216 @@ public class jdProveedor extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 11, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        // TODO add your handling code here:
+        try {
+            if(btnNuevo.getText().equals("Nuevo")){
+                btnNuevo.setText("Registrar");
+                this.limpiarControles();
+                txtCodigo.setText(String.valueOf(objProveedor.generarCodigoProveedor()));
+                txtNombre.requestFocus();
+            }else{
+                btnNuevo.setText("Nuevo");
+                objProveedor.registrarProveedor(txtNombre.getText(), txtApellidos.getText(), txtCorreo.getText(), txtTelefono.getText(),txtDireccion.getText(), objProveedor.obtenerTipoProveedor(cboTipoProveedor.getSelectedItem().toString()));
+                this.limpiarControles();
+                this.listarProveedores();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+        ResultSet rs=null;
+        try {
+            if(txtCodigo.getText().isEmpty()){
+                JOptionPane.showMessageDialog(this, "No hay un código a buscar");
+                txtCodigo.requestFocus();
+            }else{
+                rs=objProveedor.buscarProveedor(Integer.parseInt(txtCodigo.getText()));
+                if(rs.next()){
+                    txtCodigo.setText(String.valueOf(rs.getInt("idproveedor")));
+                    txtNombre.setText(rs.getString("nombre"));
+                    txtApellidos.setText(rs.getString("apellido"));
+                    txtTelefono.setText(rs.getString("telefono"));
+                    txtCorreo.setText(rs.getString("correo"));
+                    txtDireccion.setText(rs.getString("direccion"));
+                    cboTipoProveedor.setSelectedItem(objProveedor.obtenerTipoProveedorNombre(rs.getInt("tipoproveedor_idtipoproveedor")));
+                }else{
+                    JOptionPane.showMessageDialog(this, "Código inválido");
+                    limpiarControles();
+                }
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            if(txtCodigo.getText().isEmpty()){
+                JOptionPane.showConfirmDialog(this, "Debe ingresar un código para actualizar ");
+            }else{
+                String Informacion ="Estas seguro de actualizar:"+txtNombre.getText();
+                if(JOptionPane.YES_OPTION==JOptionPane.showConfirmDialog(null,Informacion,"Confirmación de Modificación", JOptionPane.YES_NO_OPTION)){
+                    objProveedor.modificarProveedor(txtNombre.getText(), txtApellidos.getText(), txtCorreo.getText(), txtTelefono.getText(),txtDireccion.getText(), objProveedor.obtenerTipoProveedor(cboTipoProveedor.getSelectedItem().toString()),Integer.parseInt(txtCodigo.getText()));
+                    limpiarControles();
+                    listarProveedores();
+                }else{
+                    limpiarControles();
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        
+        try {
+            if(txtCodigo.getText().isEmpty()){
+                JOptionPane.showConfirmDialog(this, "Debe ingresar un código a eliminar");
+            }else{
+                String Informacion ="Estas seguro de eliminar :"+txtNombre.getText();
+                if(JOptionPane.YES_OPTION==JOptionPane.showConfirmDialog(null,Informacion,"Confirmación de Eliminación", JOptionPane.YES_NO_OPTION)){
+                    objProveedor.eliminarProveedor(Integer.parseInt(txtCodigo.getText()));
+                    limpiarControles();
+                    listarProveedores();
+                }else{
+                    limpiarControles();
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, e.getMessage());
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnSalieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalieActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnSalieActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        limpiarControles();
+        try {
+            listarProveedores();
+        } catch (Exception ex) {
+           JOptionPane.showConfirmDialog(this, ex.getMessage());
+        }
+        listarTipoProveedorCombo();
+    }//GEN-LAST:event_formWindowActivated
+
+    private void tblProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProveedorMouseClicked
+        // TODO add your handling code here:
+        txtCodigo.setText(String.valueOf(tblProveedor.getValueAt(tblProveedor.getSelectedRow(), 0)));
+        btnBuscarActionPerformed(null);
+    }//GEN-LAST:event_tblProveedorMouseClicked
+
     /**
      * @param args the command line arguments
      */
+
+    public void limpiarControles(){
+        txtCodigo.setText("");
+        txtDireccion.setText("");
+        txtNombre.setText("");
+        txtApellidos.setText("");
+        txtCorreo.setText("");
+        txtTelefono.setText("");
+        cboTipoProveedor.setSelectedIndex(0);
+        txtCodigo.requestFocus();
+    }
+    
+    public void listarProveedores() throws Exception{
+        
+        /*
+          CREATE TABLE TIPOPROVEEDOR (
+          idTIPOPROVEEDOR SERIAL NULL PRIMARY KEY,
+          nombre VARCHAR(45) NOT NULL);
+
+          CREATE TABLE PROVEEDOR (
+          idPROVEEDOR SERIAL NULL PRIMARY KEY,
+          nombre VARCHAR(45) NOT NULL,
+          apellido VARCHAR(45) NOT NULL,
+          telefono VARCHAR(45) NOT NULL,
+          correo VARCHAR(45) NOT NULL,
+          direccion VARCHAR(45) NOT NULL,
+          TIPOPROVEEDOR_idTIPOPROVEEDOR INT NOT NULL REFERENCES TIPOPROVEEDOR);
+
+        */
+        
+        ResultSet rs = null;
+        Vector registro;
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Código");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Telefono");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Dirección");
+        modelo.addColumn("Tipo de proveedor");
+        
+        try {
+            rs=objProveedor.listarProveedor();
+            
+            while(rs.next()){ 
+                registro=new Vector();
+                registro.add(0,rs.getInt("idproveedor"));
+                registro.add(1,rs.getString("nombre"));
+                registro.add(2,rs.getString("apellido"));
+                registro.add(3,rs.getString("telefono"));
+                registro.add(4,rs.getString("correo"));
+                registro.add(5,rs.getString("direccion"));
+                registro.add(6,objProveedor.obtenerTipoProveedorNombre(rs.getInt("tipoproveedor_idtipoproveedor"))); 
+                
+                modelo.addRow(registro);     
+            }
+            
+            tblProveedor.setModel(modelo);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }    
+    }
+    
+    public void listarTipoProveedorCombo(){
+        ResultSet rs=null;
+        try {
+            DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+            rs=objProveedor.listarTipoProveedor();
+            while(rs.next()){
+                modelo.addElement(rs.getString("nombre"));
+            }
+            cboTipoProveedor.setModel(modelo);
+            cboTipoProveedor.setSelectedIndex(1);
+            
+        } catch (Exception e) {
+            JOptionPane.showConfirmDialog(this, e.getMessage());
+        }
+        
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -281,12 +524,12 @@ public class jdProveedor extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnSalie;
     private javax.swing.JComboBox<String> cboTipoProveedor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -297,11 +540,11 @@ public class jdProveedor extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tblProveedor;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtCorreo;
+    private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables

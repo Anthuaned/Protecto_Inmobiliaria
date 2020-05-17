@@ -43,7 +43,7 @@ public class clsJDBC {
            Class.forName(driver);
            con=DriverManager.getConnection(url, user, password);
         }catch(ClassNotFoundException | SQLException ex){
-            throw new Exception("Error al conectar a la Base de Datos!");
+            throw new Exception(ex);
         }
     }
     //Desconectar
@@ -51,8 +51,13 @@ public class clsJDBC {
         try{
            con.close();
         } catch (SQLException ex) {
-             throw new Exception("Error al desconectar de la BD!");
+             throw new Exception(ex);
         }
+    }
+    
+    //Retorna la variable de conexión
+    public Connection getConnection(){
+        return con;
     }
     
     //Ejecutar una consulta SELECT
@@ -64,7 +69,7 @@ public class clsJDBC {
             rs = sent.executeQuery(strSQL);
             return rs;
         } catch (Exception e) {
-            throw new Exception("Error al ejecutar consulta");
+            throw new Exception(e);
         } finally{
             if (con != null){
                 desconectar();
@@ -79,7 +84,7 @@ public class clsJDBC {
             sent = con.createStatement();
             sent.executeUpdate(strSQL);
         } catch (Exception e) {
-            throw new Exception("Error al ejecutar consulta");
+            throw new Exception(e);
         } finally{
             if (con != null){
                 desconectar();
