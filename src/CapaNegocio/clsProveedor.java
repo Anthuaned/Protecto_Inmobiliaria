@@ -119,6 +119,7 @@ public class clsProveedor {
         }
     }
     
+    
     public void registrarProveedor(String nombre,String apellido,String telefono,String correo,String direccion, int tipoProveedor) throws Exception{
         try {
             objConectar.conectar();

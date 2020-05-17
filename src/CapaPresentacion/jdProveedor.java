@@ -191,6 +191,11 @@ public class jdProveedor extends javax.swing.JDialog {
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/limpiarMarca.png"))); // NOI18N
         btnLimpiar.setText("Limpiar");
         btnLimpiar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         tblProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -310,7 +315,6 @@ public class jdProveedor extends javax.swing.JDialog {
             }else{
                 rs=objProveedor.buscarProveedor(Integer.parseInt(txtCodigo.getText()));
                 if(rs.next()){
-                    txtCodigo.setText(String.valueOf(rs.getInt("idproveedor")));
                     txtNombre.setText(rs.getString("nombre"));
                     txtApellidos.setText(rs.getString("apellido"));
                     txtTelefono.setText(rs.getString("telefono"));
@@ -396,6 +400,11 @@ public class jdProveedor extends javax.swing.JDialog {
         btnBuscarActionPerformed(null);
     }//GEN-LAST:event_tblProveedorMouseClicked
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        limpiarControles();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -459,7 +468,7 @@ public class jdProveedor extends javax.swing.JDialog {
             
             tblProveedor.setModel(modelo);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showConfirmDialog(this, e.getMessage());
         }    
     }
     
