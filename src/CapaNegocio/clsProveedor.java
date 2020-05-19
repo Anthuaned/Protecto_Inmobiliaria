@@ -72,20 +72,20 @@ public class clsProveedor {
         return 0;
     }
     
-    public int obtenerTipoProveedorNombre(int id) throws Exception{
+    public String obtenerTipoProveedorNombre(int id) throws Exception{
         try {
             objConectar.conectar();
             con = objConectar.getConnection();
             CallableStatement sentencia = con.prepareCall("SELECT nombre FROM tipoproveedor WHERE idtipoproveedor=?");
             sentencia.setInt(1,id);
             ResultSet resultado = sentencia.executeQuery();
-            if (resultado.next()) return resultado.getInt("idproveedor");
+            if (resultado.next()) return resultado.getString("nombre");
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }finally{
             objConectar.desconectar();
         }
-        return 0;
+        return null;
     }
     
     public Integer generarCodigoProveedor() throws Exception{

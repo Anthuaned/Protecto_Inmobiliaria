@@ -92,7 +92,7 @@ public class clsCliente {
         try {
             objConectar.conectar();
             con = objConectar.getConnection();
-            CallableStatement sentencia = con.prepareCall("SELECT*FROM clientes WHERE idcliente=?");
+            CallableStatement sentencia = con.prepareCall("SELECT*FROM cliente WHERE idcliente=?");
             sentencia.setInt(1, idCliente);
             ResultSet resultado = sentencia.executeQuery();
             return resultado;
